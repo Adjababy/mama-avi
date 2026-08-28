@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --color-cream: #FBF5E9;
+  --color-cream-deep: #F3E9D2;
+  --color-surface: #FFFFFF;
+  --color-green: #2F5233;
+  --color-green-light: #4C7A4F;
+  --color-gold: #E3A72F;
+  --color-rust: #C4622D;
+  --color-ink: #2A211A;
+  --color-muted: #6B5F4F;
+  --font-display: "Baloo 2", sans-serif;
+  --font-body: "Nunito Sans", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
