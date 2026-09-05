@@ -1,16 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --color-cream: #FBF5E9;
-  --color-cream-deep: #F3E9D2;
+  --color-cream: #F8F3E7;
+  --color-cream-deep: #EDE2C8;
+
   --color-surface: #FFFFFF;
-  --color-green: #2F5233;
-  --color-green-light: #4C7A4F;
+
+  --color-green: #173C21;
+  --color-green-light: #2F6038;
+
   --color-gold: #E3A72F;
-  --color-rust: #C4622D;
-  --color-ink: #2A211A;
-  --color-muted: #6B5F4F;
+
+  --color-rust: #8F321E;
+
+  --color-ink: #20170D;
+  --color-muted: #6B6255;
+
   --font-display: "Baloo 2", sans-serif;
   --font-body: "Nunito Sans", sans-serif;
 }
@@ -19,21 +26,95 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3, h4 {
+body,
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
 }
 
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-green);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-green-light);
+}
+
+/* Reduced motion */
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+  h1 {
+    letter-spacing: -0.02em;
   }
 }
