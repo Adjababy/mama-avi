@@ -1,4 +1,4 @@
-import { HashRouter as BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Products from "./components/Products";
@@ -10,26 +10,17 @@ import Footer from "./components/Footer";
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import Admin from "./Admin";
 
-// Ta page boutique complète
 function Boutique() {
   return (
     <>
-      <Navbar />
-      <Hero />
-      <Products />
-      <About />
-      <HowToOrder />
-      <Contact />
-      <OrderForm />
-      <Footer />
-      <WhatsAppFloat />
+      <Navbar /><Hero /><Products /><About /><HowToOrder /><Contact /><OrderForm /><Footer /><WhatsAppFloat />
     </>
   );
 }
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter >
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Boutique />} />
         <Route path="/admin" element={<Admin />} />
@@ -37,5 +28,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;
