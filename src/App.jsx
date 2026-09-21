@@ -29,7 +29,7 @@ function Boutique() {
 
 function App() {
   return (
-    <BrowserRouter basename="/mama-avi">
+    <BrowserRouter >
       <Routes>
         <Route path="/" element={<Boutique />} />
         <Route path="/admin" element={<Admin />} />
