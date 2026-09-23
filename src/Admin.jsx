@@ -12,6 +12,7 @@ export default function Admin() {
   const [commandes, setCommandes] = useState([]);
   const [search, setSearch] = useState("");
   const [filtre, setFiltre] = useState("Tous");
+  const [stock, setStock] = useState({ vivants: 0, prets: 0, vivant: 0 });
 
   useEffect(() => {
     if (localStorage.getItem("admin_mama_avi") === "true") setIsAuth(true);
@@ -19,18 +20,40 @@ export default function Admin() {
 
   useEffect(() => {
     if (!isAuth) return;
+    // Stock
+    const unsubStock = onSnapshot(doc(db, "config", "stock"), (s) => {
+      if (s.exists()) {
+        const data = s.data();
+        setStock({
+          vivants: data.vivants?? data.vivant?? 0,
+          vivant: data.vivant?? data.vivants?? 0,
+          prets: data.prets?? 0
+        });
+      }
+    });
+    // Commandes
     const q = query(collection(db, "commandes"), orderBy("date", "desc"));
     const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map(d => ({ id: d.id,...d.data() }));
       setCommandes(list);
     });
-    return () => unsub();
+    return () => { unsub(); unsubStock(); };
   }, [isAuth]);
+
+  const handleUpdateStock = async () => {
+    const vivantsValue = Number(stock.vivants || stock.vivant);
+    await updateDoc(doc(db, "config", "stock"), {
+      vivants: vivantsValue,
+      vivant: vivantsValue, // on garde les 2 pour compatibilité
+      prets: Number(stock.prets)
+    });
+    alert("Stock mis à jour!");
+  };
 
   const getPrix = (produit) => {
     if (!produit) return 3000;
     const p = produit.toLowerCase();
-    if (p.includes("prêt") || p.includes("pret") || p.includes("abattu") || p.includes("plum")) return 4000;
+    if (p.includes("prêt") || p.includes("pret") || p.includes("abattu")) return 4000;
     return 3000;
   };
 
@@ -99,6 +122,15 @@ export default function Admin() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
         <div><h1 style={{ color: "#173C21", margin: 0 }}>Dashboard Mama Avi</h1><p style={{ margin: "5px 0", fontSize:14 }}>CA Total: <b style={{ color: "#173C21" }}>{caTotal.toLocaleString()} FCFA</b> • {commandes.length} commandes</p></div>
         <div style={{ display: "flex", gap: 10 }}><button onClick={exportExcel} style={{ padding: "10px 20px", background: "#173C21", color: "white", borderRadius: 20, border: "none", fontWeight: "bold", cursor:"pointer" }}>↓ Export Excel</button><button onClick={()=>{localStorage.removeItem("admin_mama_avi"); setIsAuth(false); navigate("/");}} style={{ padding: "10px 20px", background: "white", border: "1px solid #173C21", borderRadius: 20, cursor:"pointer" }}>Sortir</button></div>
+      </div>
+
+      {/* GESTION STOCK */}
+      <div style={{ background: "white", padding: 15, borderRadius: 12, display: "flex", gap: 15, marginTop: 15, alignItems:"center", flexWrap:"wrap", border:"2px solid #E3A72F" }}>
+        <b style={{color:"#173C21"}}>📦 STOCK:</b>
+        <div>Vivants: <input type="number" value={stock.vivants || stock.vivant} onChange={e=>setStock({...stock, vivants:Number(e.target.value), vivant:Number(e.target.value)})} style={{width:70, padding:5, borderRadius:5, border:"1px solid #ccc"}} /></div>
+        <div>Prêts: <input type="number" value={stock.prets} onChange={e=>setStock({...stock, prets:Number(e.target.value)})} style={{width:70, padding:5, borderRadius:5, border:"1px solid #ccc"}} /></div>
+        <button onClick={handleUpdateStock} style={{background:"#173C21", color:"white", padding:"8px 15px", borderRadius:10, border:"none", cursor:"pointer", fontWeight:"bold"}}>Mettre à jour</button>
+        <span style={{fontSize:12, color:"#888"}}>Se met à jour tout seul après vente</span>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 15, marginTop: 20 }}>
