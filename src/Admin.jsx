@@ -203,6 +203,10 @@ export default function Admin() {
           <p style={{ margin: "5px 0", fontSize: 14 }}>
             CA Total: <b style={{ color: "#173C21" }}>{caTotal.toLocaleString()} FCFA</b> • {commandes.length} commandes
           </p>
+          {/* DIAGNOSTIC TEMPORAIRE : à supprimer quand tout fonctionne */}
+          <p style={{ margin: 0, fontSize: 11, color: "#888", wordBreak: "break-all" }}>
+            Compte : {auth.currentUser?.email} • UID : {auth.currentUser?.uid}
+          </p>
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <button
