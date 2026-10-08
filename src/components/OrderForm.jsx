@@ -5,9 +5,6 @@ import { collection, addDoc, serverTimestamp, doc, getDoc, updateDoc, onSnapshot
 import { db } from "../firebase";
 
 const PHONE = "22373911460";
-const stockActuel = form.product === "Poulets vivants"
- ? (stock.vivants?? stock.vivant?? 0)
-  : stock.prets;
 
 export default function OrderForm() {
   const [form, setForm] = useState({
